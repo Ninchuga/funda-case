@@ -11,4 +11,8 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.16.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Funda.Application\Funda.Application.csproj" />
+  </ItemGroup>
+
 </Project>

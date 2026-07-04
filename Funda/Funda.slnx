@@ -1,5 +1,7 @@
 <Solution>
   <Project Path="Funda.Application/Funda.Application.csproj" />
   <Project Path="Funda.DAL/Funda.DAL.csproj" />
+  <Project Path="Funda.Domain/Funda.Domain.csproj" />
+  <Project Path="Funda.Shared/Funda.Shared.csproj" />
   <Project Path="Funda/Funda.csproj" />
 </Solution>
