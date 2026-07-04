@@ -26,7 +26,7 @@ namespace Funda.DAL.Clients
 
         // This method should use pagination and max number of properties per call
         // Make it configurable
-        public async Task<List<Makelaar>> GetPropertiesMakellars(string city, bool propertiesWithGarden, PropertyType propertyType, int page = 1, int pageSize = 1000)
+        public async Task<List<Makelaar>> GetPropertiesMakellars(string city, bool propertiesWithGarden, PropertyType propertyType, int page = 1, int pageSize = 100)
         {
             // Query parameters need to be lower case! Otherwise 401 unauthorized error is returned from the api...missleading/unrelated error
             string urlPath = propertiesWithGarden

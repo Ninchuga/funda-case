@@ -23,9 +23,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/listtoptenmakelaars", async (IMakelaarService makelaarService, string city = "Amsterdam", bool propertiesWithGarden = false, int page = 1, int pageSize = 1000) =>
+app.MapGet("/listtoptenmakelaars", async (IMakelaarService makelaarService, string city = "Amsterdam", bool propertiesWithGarden = false) =>
 {
-    var makelaars = await makelaarService.GetMakelaarsFor(city, propertiesWithGarden, Funda.Domain.Enums.PropertyType.Koop, page, pageSize);
+    var makelaars = await makelaarService.GetMakelaarsFor(city, propertiesWithGarden, Funda.Domain.Enums.PropertyType.Koop);
 
     return Results.Ok("Here is response...");
 })
