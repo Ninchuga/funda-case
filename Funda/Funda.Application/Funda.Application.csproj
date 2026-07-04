@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Funda.DAL\Funda.DAL.csproj" />
     <ProjectReference Include="..\Funda.Domain\Funda.Domain.csproj" />
   </ItemGroup>
 

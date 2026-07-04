@@ -1,17 +1,23 @@
-﻿using Funda.DAL.Repositories;
+﻿using Funda.DAL.Clients;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Funda.DAL.DI
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddDalServices(this IServiceCollection services)
+        public static IServiceCollection AddDalServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IMakelaarRepository, MakelaarRepository>();
+            services.AddHttpClient<IFundaPropertiesClient, FundaPropertiesClient>(client =>
+            {
+                string fundaBaseUrl = configuration.GetValue<string>("Funda:BaseUrl");
+                string fundaUrlKey = configuration.GetValue<string>("Funda:ApiKey");
+
+                client.BaseAddress = new Uri($"{fundaBaseUrl}/{fundaUrlKey}");
+                client.DefaultRequestHeaders.Accept.Add(
+                    new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            });
+
             return services;
         }
     }
