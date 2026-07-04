@@ -1,26 +1,22 @@
 ﻿using Funda.DAL.Models;
 using Funda.Domain.Enums;
 using Funda.Domain.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Net.Http.Json;
-using System.Text;
 using Funda.Shared.Extensions;
 using Funda.DAL.Extensions;
 
 namespace Funda.DAL.Clients
 {
-    internal class FundaPropertiesClient : IFundaPropertiesClient
+    internal class FundaObjectsClient : IFundaObjectsClient
     {
         private readonly HttpClient _httpClient;
 
-        public FundaPropertiesClient(HttpClient httpClient)
+        public FundaObjectsClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public async Task<(List<Makelaar> makelaars, int totalPages)> GetPropertiesMakellars(string city, bool propertiesWithGarden, PropertyType propertyType, int page = 1, int pageSize = 100)
+        public async Task<(List<Makelaar> makelaars, int totalPages)> GetMakellarsDataFromObjects(string city, bool propertiesWithGarden, PropertyType propertyType, int page = 1, int pageSize = 25)
         {
             // Query parameters need to be lower case! Otherwise 401 unauthorized error is returned from the api...missleading/unrelated error
             string urlPath = propertiesWithGarden
@@ -34,9 +30,9 @@ namespace Funda.DAL.Clients
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var properties = await response.Content.ReadFromJsonAsync<FundaPropertiesToSellModel>();
+                    var objectsResponse = await response.Content.ReadFromJsonAsync<FundaObjectsResponseModel>();
 
-                    return (properties.ToMakelaars(), properties?.Paging.TotalPages ?? 0);
+                    return (objectsResponse.ToMakelaars(), objectsResponse?.Paging.TotalPages ?? 0);
                 }
             }
             catch (Exception ex)

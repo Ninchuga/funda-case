@@ -2,7 +2,7 @@
 
 namespace Funda.DAL.Models
 {
-    internal class FundaPropertiesToSellModel
+    internal class FundaObjectsResponseModel
     {
         public PropertiesMetadata Metadata { get; set; }
         public IEnumerable<FundaObject> Objects { get; set; } = [];

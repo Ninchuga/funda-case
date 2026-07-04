@@ -16,7 +16,7 @@ namespace Funda.DAL.DI
 
         private static IServiceCollection AddHttpClients(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHttpClient<IFundaPropertiesClient, FundaPropertiesClient>(client =>
+            services.AddHttpClient<IFundaObjectsClient, FundaObjectsClient>(client =>
             {
                 string fundaBaseUrl = configuration?.GetValue<string>("Funda:BaseUrl");
                 string fundaUrlKey = configuration?.GetValue<string>("Funda:ApiKey");

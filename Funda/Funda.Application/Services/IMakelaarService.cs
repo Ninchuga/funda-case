@@ -1,10 +1,9 @@
-﻿using Funda.Domain.Enums;
-using Funda.Domain.Models;
+﻿using Funda.Application.Models;
 
 namespace Funda.Application.Services
 {
     public interface IMakelaarService
     {
-        Task<List<Makelaar>> GetMakelaarsFor(string city, bool propertiesWithGarden, PropertyType propertyType);
+        Task<List<SellingMakelaarDto>> GetTopTenSellingMakelaarsFor(string city, bool propertiesWithGarden);
     }
 }

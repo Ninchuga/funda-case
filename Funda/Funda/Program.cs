@@ -23,14 +23,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/listtoptenmakelaars", async (IMakelaarService makelaarService, string city = "Amsterdam", bool propertiesWithGarden = false) =>
+app.MapGet("/listtoptensellingmakelaars", async (IMakelaarService makelaarService, string city = "Amsterdam", bool propertiesWithGarden = false) =>
 {
-    var makelaars = await makelaarService.GetMakelaarsFor(city, propertiesWithGarden, Funda.Domain.Enums.PropertyType.Koop);
+    var topTenMakelaars = await makelaarService.GetTopTenSellingMakelaarsFor(city, propertiesWithGarden);
 
-    return Results.Ok("Here is response...");
+    return Results.Ok(topTenMakelaars);
 })
-.WithName("TopTenMakelaars");
+.WithName("TopTenSellingMakelaars");
 
 app.Run();
-
-internal record Makelaar(string Name, string City, int Rating, int TotalProperties);
