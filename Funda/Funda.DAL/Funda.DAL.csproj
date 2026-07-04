@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Funda.Domain\Funda.Domain.csproj" />
+    <ProjectReference Include="..\Funda.Shared\Funda.Shared.csproj" />
   </ItemGroup>
 
 </Project>

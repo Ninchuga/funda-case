@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Text;
+using Funda.Shared.Extensions;
 
 namespace Funda.DAL.Clients
 {
@@ -25,21 +26,22 @@ namespace Funda.DAL.Clients
 
         // This method should use pagination and max number of properties per call
         // Make it configurable
-        public async Task<List<Makelaar>> GetPropertiesMakellars(string city, bool propertiesWithGarden, PropertyType propertyType)
+        public async Task<List<Makelaar>> GetPropertiesMakellars(string city, bool propertiesWithGarden, PropertyType propertyType, int page = 1, int pageSize = 1000)
         {
-            string urlPath = propertiesWithGarden ? $"?type={propertyType}&zo=/{city}/tuin/" : $"?type={propertyType}&zo=/{city}/";
+            // Query parameters need to be lower case! Otherwise 401 unauthorized error is returned from the api...missleading/unrelated error
+            string urlPath = propertiesWithGarden
+                ? $"?type={propertyType.ToLowerString()}&zo=/{city.ToLower()}/tuin/&page={page}&pageSize={pageSize}"
+                : $"?type={propertyType.ToLowerString()}&zo=/{city.ToLower()}/&page={page}&pageSize={pageSize}";
             string url = $"{_httpClient.BaseAddress}/{urlPath}";
 
             try
             {
                 var response = await _httpClient.GetAsync(url);
-                //var response = await _httpClient.GetStringAsync(url);
-                //var properties = JsonConvert.DeserializeObject<FundaPropertiesToSellModel>(response);
-                //var properties = JsonConvert.DeserializeObject<FundaPropertiesToSellModel>(response.Content.ReadFromJsonAsync<FundaPropertiesToSellModel>());
-                var properties = await response.Content.ReadFromJsonAsync<FundaPropertiesToSellModel>();
 
                 if (response.IsSuccessStatusCode)
                 {
+                    var properties = await response.Content.ReadFromJsonAsync<FundaPropertiesToSellModel>();
+
                     return []; // TODO: Map this to domain model Makelaar and return the list of Makelaars
                 }
             }

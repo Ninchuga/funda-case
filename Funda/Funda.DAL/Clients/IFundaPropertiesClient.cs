@@ -9,6 +9,6 @@ namespace Funda.DAL.Clients
 {
     public interface IFundaPropertiesClient
     {
-        Task<List<Makelaar>> GetPropertiesMakellars(string city, bool propertiesWithGarden, PropertyType propertyType);
+        Task<List<Makelaar>> GetPropertiesMakellars(string city, bool propertiesWithGarden, PropertyType propertyType, int page = 1, int pageSize = 1000);
     }
 }

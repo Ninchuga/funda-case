@@ -1,6 +1,7 @@
 using Scalar.AspNetCore;
 using Funda.Application.DI;
 using Funda.DAL.DI;
+using Funda.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +23,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/listtoptenmakelaars", (string city = "Amsterdam", bool propertiesWithGarden = false) =>
+app.MapGet("/listtoptenmakelaars", async (IMakelaarService makelaarService, string city = "Amsterdam", bool propertiesWithGarden = false, int page = 1, int pageSize = 1000) =>
 {
+    var makelaars = await makelaarService.GetMakelaarsFor(city, propertiesWithGarden, Funda.Domain.Enums.PropertyType.Koop, page, pageSize);
 
     return Results.Ok("Here is response...");
 })

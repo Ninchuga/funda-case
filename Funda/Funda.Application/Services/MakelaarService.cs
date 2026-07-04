@@ -16,10 +16,10 @@ namespace Funda.Application.Services
             _fundaPropertiesClient = fundaPropertiesClient;
         }
 
-        public async Task<List<Makelaar>> GetMakelaarsFor(string city, bool propertiesWithGarden, PropertyType propertyType)
+        public async Task<List<Makelaar>> GetMakelaarsFor(string city, bool propertiesWithGarden, PropertyType propertyType, int page = 1, int pageSize = 1000)
         {
             
-            var makelaars = _fundaPropertiesClient.GetPropertiesMakellars(city, propertiesWithGarden, propertyType);
+            var makelaars = _fundaPropertiesClient.GetPropertiesMakellars(city, propertiesWithGarden, propertyType, page, pageSize);
 
             return [];
         }
