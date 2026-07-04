@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Text;
 using Funda.Shared.Extensions;
+using Funda.DAL.Extensions;
 
 namespace Funda.DAL.Clients
 {
@@ -19,14 +20,7 @@ namespace Funda.DAL.Clients
             _httpClient = httpClient;
         }
 
-        // TODO: Add logic to get the makelaars for the given city, propertiesWithGarden and propertyType
-        // implement retry and error handling logic and count top ten makelaars based on the number of properties they have listed in the given city,
-        // with the given property type and garden preference.
-        // Add caching to avoid hitting the API too often and to improve performance.
-
-        // This method should use pagination and max number of properties per call
-        // Make it configurable
-        public async Task<List<Makelaar>> GetPropertiesMakellars(string city, bool propertiesWithGarden, PropertyType propertyType, int page = 1, int pageSize = 100)
+        public async Task<(List<Makelaar> makelaars, int totalPages)> GetPropertiesMakellars(string city, bool propertiesWithGarden, PropertyType propertyType, int page = 1, int pageSize = 100)
         {
             // Query parameters need to be lower case! Otherwise 401 unauthorized error is returned from the api...missleading/unrelated error
             string urlPath = propertiesWithGarden
@@ -42,7 +36,7 @@ namespace Funda.DAL.Clients
                 {
                     var properties = await response.Content.ReadFromJsonAsync<FundaPropertiesToSellModel>();
 
-                    return []; // TODO: Map this to domain model Makelaar and return the list of Makelaars
+                    return (properties.ToMakelaars(), properties?.Paging.TotalPages ?? 0);
                 }
             }
             catch (Exception ex)
@@ -50,7 +44,7 @@ namespace Funda.DAL.Clients
                 // TODO: log error here
             }
 
-            return [];
+            return ([], 0);
         }
     }
 }

@@ -10,5 +10,11 @@
         public string Postcode { get; set; }
         public string Woonplaats { get; set; }
         public int AantalKamers { get; set; }
+        public string BronCode { get; set; }
+        public List<ChildrenObject> ChildrenObjects { get; set; } = [];
+    }
+
+    internal class ChildrenObject : FundaObject
+    {
     }
 }
