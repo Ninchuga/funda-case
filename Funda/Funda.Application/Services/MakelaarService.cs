@@ -7,7 +7,7 @@ namespace Funda.Application.Services
 {
     internal class MakelaarService : IMakelaarService
     {
-        public async Task<List<Makelaar>> GetTopTenMakelaarsFor(string city, bool propertiesWithGarden)
+        public async Task<List<Makelaar>> GetMakelaarsFor(string city, bool propertiesWithGarden)
         {
             return [];
         }

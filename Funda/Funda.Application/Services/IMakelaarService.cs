@@ -4,6 +4,6 @@ namespace Funda.Application.Services
 {
     public interface IMakelaarService
     {
-        Task<List<Makelaar>> GetTopTenMakelaarsFor(string city, bool propertiesWithGarden);
+        Task<List<Makelaar>> GetMakelaarsFor(string city, bool propertiesWithGarden);
     }
 }
