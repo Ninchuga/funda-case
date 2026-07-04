@@ -19,9 +19,11 @@ app.UseHttpsRedirection();
 
 app.MapGet("/listtoptenmakelaars", (string city = "Amsterdam", bool propertiesWithGarden = false) =>
 {
+
     return Results.Ok("Here is response...");
 })
 .WithName("TopTenMakelaars");
 
 app.Run();
 
+internal record Makelaar(string Name, string City, int Rating, int TotalProperties);
