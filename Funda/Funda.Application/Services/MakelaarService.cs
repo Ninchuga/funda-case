@@ -3,26 +3,44 @@ using Funda.Application.Models;
 using Funda.DAL.Clients;
 using Funda.Domain.Enums;
 using Funda.Domain.Models;
-using Microsoft.Extensions.Configuration;
+using Funda.Shared.Configurations;
+using Funda.Shared.Constants;
+using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Funda.Application.Services
 {
     internal class MakelaarService : IMakelaarService
     {
         private readonly IFundaObjectsClient _fundaPropertiesClient;
-        private readonly IConfiguration _configuration;
+        private readonly FundaConfig _fundaConfig;
+        private readonly HybridCache _cache;
+        private readonly ILogger<MakelaarService> _logger;
 
-        public MakelaarService(IFundaObjectsClient fundaPropertiesClient, IConfiguration configuration)
+        public MakelaarService(IFundaObjectsClient fundaPropertiesClient, IOptionsSnapshot<FundaConfig> fundaConfig, HybridCache cache, ILogger<MakelaarService> logger)
         {
             _fundaPropertiesClient = fundaPropertiesClient;
-            _configuration = configuration;
+            _fundaConfig = fundaConfig.Value;
+            _cache = cache;
+            _logger = logger;
         }
 
         public async Task<List<SellingMakelaarDto>> GetTopTenSellingMakelaarsFor(string city, bool propertiesWithGarden)
         {
-            int pageSize = _configuration?.GetValue<int?>("Funda:GetPropertiesPageSize") ?? 25;
+            string cacheKey = $"TopTenSellingMakelaars_{city}_{propertiesWithGarden}";
+
+            //var topTenMakelaars = await _cache.GetOrCreateAsync(
+            //    cacheKey,
+            //    async token => await FetchProductFromDbAsync(id, token),
+            //    cancellationToken: ct);
+
+            int pageSize = _fundaConfig?.ObjectsLookupApi?.PageSize ?? FundaApplicationConstants.ApiConfig.PageSize;
             int currentPage = 1;
             int totalPages = 1;
+
+            _logger.LogInformation("Executing {ServiceName}.{MethodName} city: {City}, propertiesWithGarden: {PropertiesWithGarden}, propertyType: {PropertyType}....", 
+                nameof(MakelaarService), nameof(GetTopTenSellingMakelaarsFor), city, propertiesWithGarden, PropertyType.Koop);
 
             Dictionary<int, Makelaar> makelaarPropertiesForSale = [];
 
@@ -41,6 +59,8 @@ namespace Funda.Application.Services
             }
 
             var topTenMakelaars = makelaarPropertiesForSale.OrderByDescending(x => x.Value.NumberOfPropertiesForSale).ThenBy(x => x.Value.Id).Take(10);
+
+            _logger.LogInformation("Executed {ServiceName}.{MethodName}. Last page executed: {currentPage}", nameof(MakelaarService), nameof(GetTopTenSellingMakelaarsFor), currentPage);
 
             // TODO: Add topTenMakelaars to a cache to avoid unneccessary calls to the Funda API. The cache should be invalidated after a certain period of time or when the data changes.
 

@@ -13,7 +13,7 @@ namespace Funda.DAL.Extensions
             var makelaarsFromChildrenObjects = objectsResponseModel.Objects?.SelectMany(x => x.ChildrenObjects ?? []).Select(x => new { x.MakelaarId, x.MakelaarNaam }).ToList() ?? [];
             makelaars.AddRange(makelaarsFromChildrenObjects);
 
-            return [.. makelaars.Select(mak => new Makelaar(mak.MakelaarId, mak.MakelaarNaam, NumberOfPropertiesForSale: 0, NumberOfPropertiesForRent: 0))];
+            return [.. makelaars.Select(mak => new Makelaar(mak.MakelaarId, mak.MakelaarNaam, NumberOfPropertiesForSale: 0))];
         }
     }
 }

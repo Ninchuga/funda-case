@@ -1,16 +1,10 @@
-using Scalar.AspNetCore;
-using Funda.Application.DI;
-using Funda.DAL.DI;
 using Funda.Application.Services;
+using Funda.DI;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-builder.Services.AddApplicationServices();
-builder.Services.AddDalServices(builder.Configuration);
-
+builder.Services.AddWebServices(builder.Configuration);
 
 var app = builder.Build();
 

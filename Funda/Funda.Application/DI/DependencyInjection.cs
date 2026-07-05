@@ -1,9 +1,5 @@
 ﻿using Funda.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Funda.Application.DI
 {

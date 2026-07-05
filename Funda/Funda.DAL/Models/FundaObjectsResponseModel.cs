@@ -11,9 +11,14 @@ namespace Funda.DAL.Models
 
     internal class PropertiesMetadata
     {
-        public string Titel { get; set; }
+        [JsonPropertyName("Titel")]
+        public string Title { get; set; }
+
+        [JsonPropertyName("ObjectType")]
         public string ObjectType { get; set; }
-        public string Omschrijving { get; set; }
+
+        [JsonPropertyName("Omschrijving")]
+        public string Description { get; set; }
     }
 
     internal class Paging
