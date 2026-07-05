@@ -3,5 +3,6 @@
   <Project Path="Funda.DAL/Funda.DAL.csproj" />
   <Project Path="Funda.Domain/Funda.Domain.csproj" />
   <Project Path="Funda.Shared/Funda.Shared.csproj" />
+  <Project Path="Funda.Tests/Funda.Tests.csproj" />
   <Project Path="Funda/Funda.csproj" />
 </Solution>
