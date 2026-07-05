@@ -17,11 +17,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/listtoptensellingmakelaars", async (IMakelaarService makelaarService, string city = "Amsterdam", bool propertiesWithGarden = false) =>
+app.MapGet("/listtoptensellingmakelaars", async (IMakelaarService makelaarService, CancellationToken cancellationToken, string city = "Amsterdam", bool propertiesWithGarden = false) =>
 {
-    var topTenMakelaars = await makelaarService.GetTopTenSellingMakelaarsFor(city, propertiesWithGarden);
+    var topTenMakelaarsResult = await makelaarService.GetTopTenSellingMakelaarsFor(city, propertiesWithGarden, cancellationToken);
 
-    return Results.Ok(topTenMakelaars);
+    return Results.Ok(topTenMakelaarsResult);
 })
 .WithName("TopTenSellingMakelaars");
 

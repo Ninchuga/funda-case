@@ -4,9 +4,17 @@ namespace Funda.DAL.Models
 {
     internal class FundaObjectsResponseModel
     {
+        [JsonPropertyName("Metadata")]
         public PropertiesMetadata Metadata { get; set; }
+
+        [JsonPropertyName("Objects")]
         public IEnumerable<FundaObject> Objects { get; set; } = [];
+
+        [JsonPropertyName("Paging")]
         public Paging Paging { get; set; }
+
+        [JsonPropertyName("TotaalAantalObjecten")]
+        public int TotalNumberOfObjects { get; set; }
     }
 
     internal class PropertiesMetadata

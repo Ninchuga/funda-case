@@ -6,7 +6,7 @@
         {
             public const int PageSize = 25;
             public const int MaxNumberOfRequestsPerMinute = 100;
-            public const int MaxRetries = 3;
+            public const int MaxRetries = 5;
         }
         
     }
