@@ -17,7 +17,7 @@ namespace Funda.DAL.Models
         public int MakelaarId { get; set; }
 
         [JsonPropertyName("MakelaarNaam")]
-        public string MakelaarNaam { get; set; }
+        public string MakelaarName { get; set; }
 
         [JsonPropertyName("Postcode")]
         public string Postcode { get; set; }

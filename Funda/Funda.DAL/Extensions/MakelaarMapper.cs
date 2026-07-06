@@ -9,11 +9,11 @@ namespace Funda.DAL.Extensions
             if (objectsResponseModel is null)
                 return [];
 
-            var makelaars = objectsResponseModel.Objects?.Select(x => new { x.MakelaarId, x.MakelaarNaam }).ToList() ?? [];
-            var makelaarsFromChildrenObjects = objectsResponseModel.Objects?.SelectMany(x => x.ChildrenObjects ?? []).Select(x => new { x.MakelaarId, x.MakelaarNaam }).ToList() ?? [];
+            var makelaars = objectsResponseModel.Objects?.Select(x => new { x.MakelaarId, x.MakelaarName }).ToList() ?? [];
+            var makelaarsFromChildrenObjects = objectsResponseModel.Objects?.SelectMany(x => x.ChildrenObjects ?? []).Select(x => new { x.MakelaarId, x.MakelaarName }).ToList() ?? [];
             makelaars.AddRange(makelaarsFromChildrenObjects);
 
-            return [.. makelaars.Select(mak => new Makelaar(mak.MakelaarId, mak.MakelaarNaam, NumberOfPropertiesForSale: 0))];
+            return [.. makelaars.Select(mak => new Makelaar(mak.MakelaarId, mak.MakelaarName, NumberOfPropertiesForSale: 0))];
         }
     }
 }
