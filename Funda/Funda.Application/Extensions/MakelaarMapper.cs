@@ -5,6 +5,9 @@ namespace Funda.Application.Extensions
 {
     internal static class MakelaarMapper
     {
+        public static List<SellingMakelaarDto> ToDtos(this IEnumerable<Makelaar> makelaars) =>
+            makelaars is null ? [] : [.. makelaars.Select(m => m.ToDto())];
+
         public static SellingMakelaarDto ToDto(this Makelaar makelaar)
         {
             return makelaar is null

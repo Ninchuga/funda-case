@@ -21,7 +21,6 @@
 
         public static Result Failure(string error, IEnumerable<string>? warnings = null)
             => new Result([error], warnings);
-
     }
 
     public class Result<T> : Result

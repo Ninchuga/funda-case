@@ -27,22 +27,22 @@ namespace Funda.Application.Services
             string cacheKey = $"TopTenSellingMakelaars_{city}_garden:{propertiesWithGarden}";
             var topTenMakelaarsCache = await TryGetTopSellingMakelaarsFromCache(cacheKey, cancellationToken);
             if (topTenMakelaarsCache is not null)
-                return Result<List<SellingMakelaarDto>>.Success(topTenMakelaarsCache);
+                return Result<List<SellingMakelaarDto>>.Success(topTenMakelaarsCache.ToDtos());
 
             var topTenMakelaarsResult = await GetTopTenSellingMakelaars(city, propertiesWithGarden, cancellationToken);
             if (!topTenMakelaarsResult.IsSuccess)
-                return topTenMakelaarsResult;
+                return Result<List<SellingMakelaarDto>>.Failure(topTenMakelaarsResult.Errors);
 
             await _cache.SetAsync(cacheKey, topTenMakelaarsResult.Data, cancellationToken: cancellationToken);
 
-            return Result<List<SellingMakelaarDto>>.Success(topTenMakelaarsResult.Data);
+            return Result<List<SellingMakelaarDto>>.Success(topTenMakelaarsResult.Data.ToDtos());
         }
 
-        private async Task<List<SellingMakelaarDto>?> TryGetTopSellingMakelaarsFromCache(string cacheKey, CancellationToken cancellationToken)
+        private async Task<List<Makelaar>> TryGetTopSellingMakelaarsFromCache(string cacheKey, CancellationToken cancellationToken)
         {
-            return await _cache.GetOrCreateAsync<List<SellingMakelaarDto>>(
+            return await _cache.GetOrCreateAsync<List<Makelaar>>(
                             cacheKey,
-                            factory: null, // Passing null because we disable underlying data execution flags, just checking the cache
+                            factory: null!, // Passing null because we disabled underlying data execution flags, just checking the cache
                             options: new HybridCacheEntryOptions
                             {
                                 Flags = HybridCacheEntryFlags.DisableUnderlyingData
@@ -50,7 +50,7 @@ namespace Funda.Application.Services
                             cancellationToken: cancellationToken);
         }
 
-        private async Task<Result<List<SellingMakelaarDto>>> GetTopTenSellingMakelaars(string city, bool propertiesWithGarden, CancellationToken cancellationToken)
+        private async Task<Result<List<Makelaar>>> GetTopTenSellingMakelaars(string city, bool propertiesWithGarden, CancellationToken cancellationToken)
         {
             int pageSize = _fundaConfig?.ObjectsLookupApi?.PageSize ?? FundaApplicationConstants.ApiConfig.PageSize;
             int currentPage = 1;
@@ -70,7 +70,7 @@ namespace Funda.Application.Services
             {
                 var makelaarsResponse = await _fundaPropertiesClient.GetMakellarsDataFromObjects(request, cancellationToken);
                 if (!makelaarsResponse.IsSuccess)
-                    return Result<List<SellingMakelaarDto>>.Failure(makelaarsResponse.Errors);
+                    return Result<List<Makelaar>>.Failure(makelaarsResponse.Errors);
 
                 if (makelaarsResponse.Data?.Makelaars is null || makelaarsResponse.Data.Makelaars.Count == 0)
                     break;
@@ -86,9 +86,9 @@ namespace Funda.Application.Services
 
             var topTenMakelaars = makelaarPropertiesForSale.OrderByDescending(x => x.Value.NumberOfPropertiesForSale).ThenBy(x => x.Value.Id).Take(10);
 
-            _logger.LogInformation("Executed {ServiceName}.{MethodName}. Last page executed: {currentPage}", nameof(MakelaarService), nameof(GetTopTenSellingMakelaarsFor), currentPage);
+            _logger.LogInformation("Executed {ServiceName}.{MethodName}. Last page executed: {CurrentPage}", nameof(MakelaarService), nameof(GetTopTenSellingMakelaarsFor), currentPage);
 
-            return Result<List<SellingMakelaarDto>>.Success([.. topTenMakelaars.Select(x => x.Value.ToDto())]);
+            return Result<List<Makelaar>>.Success([.. topTenMakelaars.Select(m => m.Value)]);
         }
 
         private static void SyncMakelaarsPropertiesForSale(Dictionary<int, Makelaar> makelaarPropertiesForSale, IEnumerable<Makelaar> makelaars)
