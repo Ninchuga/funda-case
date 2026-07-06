@@ -2,7 +2,7 @@
 
 namespace Funda.DAL.Models
 {
-    internal record GetMakelaarsDataFromObjectsRequest(
+    public record GetMakelaarsDataFromObjectsRequest(
         string City,
         bool PropertiesWithGarden,
         PropertyType PropertyType,

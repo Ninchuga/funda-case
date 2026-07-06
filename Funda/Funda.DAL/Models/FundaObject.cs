@@ -1,16 +1,37 @@
-﻿namespace Funda.DAL.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Funda.DAL.Models
 {
     internal class FundaObject
     {
-        public string Adres { get; set; }
-        public decimal? Koopprijs { get; set; }
-        public decimal? KoopprijsTot { get; set; }
+        [JsonPropertyName("Adres")]
+        public string Address { get; set; }
+
+        [JsonPropertyName("Koopprijs")]
+        public decimal? Price { get; set; }
+
+        [JsonPropertyName("KoopprijsTot")]
+        public decimal? PurchasePrice { get; set; }
+
+        [JsonPropertyName("MakelaarId")]
         public int MakelaarId { get; set; }
+
+        [JsonPropertyName("MakelaarNaam")]
         public string MakelaarNaam { get; set; }
+
+        [JsonPropertyName("Postcode")]
         public string Postcode { get; set; }
-        public string Woonplaats { get; set; }
-        public int? AantalKamers { get; set; }
-        public string BronCode { get; set; }
+
+        [JsonPropertyName("Woonplaats")]
+        public string Place { get; set; }
+
+        [JsonPropertyName("AantalKamers")]
+        public int? NumberOfRooms { get; set; }
+
+        [JsonPropertyName("BronCode")]
+        public string SourceCode { get; set; }
+
+        [JsonPropertyName("ChildrenObjects")]
         public List<ChildrenObject> ChildrenObjects { get; set; } = [];
     }
 
